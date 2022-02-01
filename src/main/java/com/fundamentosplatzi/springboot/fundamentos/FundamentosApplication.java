@@ -61,7 +61,23 @@ public class FundamentosApplication implements CommandLineRunner {
 		log.info("### User with query method by email and name: "
 				+ userRepository.findByEmailAndName("jessica@mail.com", "Jessica")
 				.orElseThrow(() -> new RuntimeException("The user could't be found.")));
-
+		userRepository.findByNameLike("%na%")
+				.stream()
+				.forEach(user -> log.info("### User with query method like: " + user));
+		userRepository.findByNameOrEmail("Carla", "dana@mail.com")
+				.stream()
+				.forEach(user -> log.info("### User with query method or: " + user));
+		userRepository.findByBirthDateBetween(
+				LocalDate.of(2000, 1, 1),
+				LocalDate.of(2021, 12, 31))
+				.stream()
+				.forEach(user -> log.info("### User with query method between: " + user));
+		userRepository.findByNameLikeOrderByIdDesc("%na")
+				.stream()
+				.forEach(user -> log.info("### User with query method like an order by: " + user));
+		userRepository.findByNameContainingOrderByIdAsc("na")
+				.stream()
+				.forEach(user -> log.info("### User with query method containing an order by: " + user));
 	}
 
 	private void saveUsersInDataBase() {
