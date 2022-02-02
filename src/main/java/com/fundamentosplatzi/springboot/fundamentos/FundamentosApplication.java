@@ -9,6 +9,7 @@ import com.fundamentosplatzi.springboot.fundamentos.pojo.UserPojo;
 import com.fundamentosplatzi.springboot.fundamentos.repository.UserRepository;
 import com.fundamentosplatzi.springboot.fundamentos.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
@@ -63,7 +64,7 @@ public class FundamentosApplication implements CommandLineRunner {
 				new User(
 						0L,
 						"Aidee",
-						"aidee@mail.com",
+						"jessica_alba@mail.com",
 						LocalDate.of(2008, 6, 1),
 						null),
 				new User(
@@ -85,7 +86,13 @@ public class FundamentosApplication implements CommandLineRunner {
 						LocalDate.of(2012, 12, 18),
 						null)
 		);
-		userService.saveTransactional(users);
+		try {
+			userService.saveTransactional(users);
+		} catch (ConstraintViolationException e) {
+			log.error("ConstraintViolationException in transactional method!", e);
+		} catch (Exception e) {
+			log.error("Exception in transactional method!", e);
+		}
 		userService.getAllUsers().stream()
 				.forEach(user -> log.info("### Transactional user: " + user));
 	}
