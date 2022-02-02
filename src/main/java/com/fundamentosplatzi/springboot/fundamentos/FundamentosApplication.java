@@ -7,6 +7,7 @@ import com.fundamentosplatzi.springboot.fundamentos.component.ComponentDependenc
 import com.fundamentosplatzi.springboot.fundamentos.entity.User;
 import com.fundamentosplatzi.springboot.fundamentos.pojo.UserPojo;
 import com.fundamentosplatzi.springboot.fundamentos.repository.UserRepository;
+import com.fundamentosplatzi.springboot.fundamentos.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -35,6 +36,8 @@ public class FundamentosApplication implements CommandLineRunner {
 	private UserPojo userPojo;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private UserService userService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(FundamentosApplication.class, args);
@@ -46,6 +49,45 @@ public class FundamentosApplication implements CommandLineRunner {
 		logExamples();
 		saveUsersInDataBase();
 		getInformationJpqlFromUser();
+		saveWithTransactionalError();
+	}
+
+	private void saveWithTransactionalError() {
+		List<User> users = Arrays.asList(
+				new User(
+						0L,
+						"Jessica Alba",
+						"jessica_alba@mail.com",
+						LocalDate.of(1990, 8, 12),
+						null),
+				new User(
+						0L,
+						"Aidee",
+						"aidee@mail.com",
+						LocalDate.of(2008, 6, 1),
+						null),
+				new User(
+						0L,
+						"Rebeca",
+						"rebecaaaa@mail.com",
+						LocalDate.of(2005, 3, 22),
+						null),
+				new User(
+						0L,
+						"Georgina",
+						"georgina@mail.com",
+						LocalDate.of(1985, 8, 27),
+						null),
+				new User(
+						0L,
+						"gabriela",
+						"gabriela@mail.com",
+						LocalDate.of(2012, 12, 18),
+						null)
+		);
+		userService.saveTransactional(users);
+		userService.getAllUsers().stream()
+				.forEach(user -> log.info("### Transactional user: " + user));
 	}
 
 	private void getInformationJpqlFromUser() {
