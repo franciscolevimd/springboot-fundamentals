@@ -78,6 +78,11 @@ public class FundamentosApplication implements CommandLineRunner {
 		userRepository.findByNameContainingOrderByIdAsc("na")
 				.stream()
 				.forEach(user -> log.info("### User with query method containing an order by: " + user));
+
+		log.info("### User with named parameters is. " + userRepository.getAllByBirthDateAndEmail(
+				LocalDate.of(2018, 9, 12),
+				"fatsy@mail.com"
+		).orElseThrow(() -> new RuntimeException("The user could't be found.")));
 	}
 
 	private void saveUsersInDataBase() {
