@@ -1,5 +1,6 @@
 package com.fundamentosplatzi.springboot.fundamentos.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,5 +20,6 @@ public class Post {
     @Column(name = "description", length = 255)
     private String description;
     @ManyToOne
+    @JsonBackReference
     private User user;
 }
