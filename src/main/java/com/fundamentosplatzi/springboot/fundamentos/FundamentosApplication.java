@@ -64,7 +64,7 @@ public class FundamentosApplication implements CommandLineRunner {
 				new User(
 						0L,
 						"Aidee",
-						"jessica_alba@mail.com",
+						"aidee@mail.com",
 						LocalDate.of(2008, 6, 1),
 						null),
 				new User(

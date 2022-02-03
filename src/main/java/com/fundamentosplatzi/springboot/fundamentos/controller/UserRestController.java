@@ -5,7 +5,12 @@ import com.fundamentosplatzi.springboot.fundamentos.caseuse.DeleteUser;
 import com.fundamentosplatzi.springboot.fundamentos.caseuse.GetUser;
 import com.fundamentosplatzi.springboot.fundamentos.caseuse.UpdateUser;
 import com.fundamentosplatzi.springboot.fundamentos.entity.User;
+import com.fundamentosplatzi.springboot.fundamentos.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +28,8 @@ public class UserRestController {
     private DeleteUser deleteUser;
     @Autowired
     private UpdateUser updateUser;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/")
     public List<User> get() {
@@ -47,5 +54,10 @@ public class UserRestController {
         } catch(Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/list")
+    Page<User> getUserPageable(@PageableDefault(size = 10, page = 0)Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 }
