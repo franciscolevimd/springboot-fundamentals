@@ -33,4 +33,15 @@ public class UserService {
     public void delete(Long id) {
         userRepository.deleteById(id);
     }
+
+    public User update(User newUser, Long id) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    user.setEmail(newUser.getEmail());
+                    user.setBirthDate(newUser.getBirthDate());
+                    user.setName(newUser.getName());
+                    user.setPosts(newUser.getPosts());
+                    return userRepository.save(user);
+                }).orElseThrow(() -> new RuntimeException("The user could't be found."));
+    }
 }
