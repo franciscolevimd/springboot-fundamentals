@@ -1,6 +1,7 @@
 package com.fundamentosplatzi.springboot.fundamentos.controller;
 
 import com.fundamentosplatzi.springboot.fundamentos.caseuse.CreateUser;
+import com.fundamentosplatzi.springboot.fundamentos.caseuse.DeleteUser;
 import com.fundamentosplatzi.springboot.fundamentos.caseuse.GetUser;
 import com.fundamentosplatzi.springboot.fundamentos.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ public class UserRestController {
     private GetUser getUser;
     @Autowired
     private CreateUser createUser;
+    @Autowired
+    private DeleteUser deleteUser;
 
     @GetMapping("/")
     public List<User> get() {
@@ -26,5 +29,11 @@ public class UserRestController {
     @PostMapping("/")
     ResponseEntity<User> newUser(@RequestBody User newUser) {
         return new ResponseEntity<>(createUser.save(newUser), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        deleteUser.remove(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
